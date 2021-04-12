@@ -32,8 +32,7 @@ app = Flask(__name__)
 def summerize():
 
   # Non-Post method error
-  if request.method != "POST":
-    return "Only accepting POST method", 400
+  if request.method != "POST" : return "Only accepting POST method", 400 
 
   # Checking for POST method
   if request.method == "POST":
@@ -50,11 +49,10 @@ def summerize():
       LANGUAGE = request.form.get('site-language')
 
       # Sentences parameter optional, defaults to 10
-      if request.form.get("sentences",None) == None:
-        SENTENCES_COUNT = 10
-      else:
-        SENTENCES_COUNT = int(request.form.get('sentences'))
+      SENTENCES_COUNT = int(request.form.get('sentences'))
 
+      if request.form.get("sentences", None) == None : SENTENCES_COUNT = 10 
+        
       # Optional google cached parameter, helps avoid anti-bot pages
       if str(request.form.get('cached')).lower() == "true" and request.form.get('cached', None) != None:
 
@@ -65,7 +63,9 @@ def summerize():
         
       # Testing for valid URL / Checking if bot can access it
       try:
+
         parser = HtmlParser.from_url(url, Tokenizer(LANGUAGE))
+
       except:
         return "URL provided is not valid (or cant reach) try enabling cached. " + url, 400
         
@@ -90,8 +90,7 @@ def summerize():
         if fax == True:
           return jsonify(str(sums)), 200
 
-    except Exception as e:
-      return errorMsg + " Error: " + str(e), 400
+    except Exception as e : return errorMsg + " Error: " + str(e), 400
 
 @app.route("/")
 def index():
